@@ -1,2 +1,2 @@
-# Lesson_1
+# Automatation
 Задачи курса автоматизации на Python
