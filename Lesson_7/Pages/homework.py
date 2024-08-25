@@ -7,7 +7,8 @@ from Pages.data import *
 class MainPage:
     def __init__(self, browser):
         self.browser = browser
-        self.browser.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
+        URL1 = "https://bonigarcia.dev/selenium-webdriver-java/data-types.html"
+        self.browser.get(URL1)
 
     def find_fields(self):
         self._first_name = (By.NAME, "first-name")
@@ -35,4 +36,5 @@ class MainPage:
         self.browser.find_element(*self._company).send_keys(company)
 
     def click_submit_button(self):
-        WebDriverWait(self.browser, 20, 0.1).until(EC.element_to_be_clickable(self._button)).click()
+        WebDriverWait(self.browser, 20, 0.1).until(
+            EC.element_to_be_clickable(self._button)).click()
