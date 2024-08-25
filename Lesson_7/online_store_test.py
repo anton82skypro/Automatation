@@ -1,44 +1,19 @@
 import pytest
-from selenium.webdriver.common.by import By
-from Pages.homework import URL3
+from selenium.webdriver.chrome.webdriver import WebDriver
+from Pages.ShopContainer import ShopContainer
+from time import sleep
 
 
 @pytest.mark.test_online_store
-def test_total_label(chrome_browser):
-    chrome_browser.get(URL3)
-    # авторизоваться
-    chrome_browser.find_element(
-        By.CSS_SELECTOR, '#user-name').send_keys("standard_user")
-    chrome_browser.find_element(
-        By.CSS_SELECTOR, '#password').send_keys("secret_sauce")
-    chrome_browser.find_element(By.CSS_SELECTOR, '#login-button').click()
-    # добавить в корзину товары
-    chrome_browser.find_element(
-        By.ID, 'add-to-cart-sauce-labs-backpack').click()
-    chrome_browser.find_element(
-        By.ID, 'add-to-cart-sauce-labs-bolt-t-shirt').click()
-    chrome_browser.find_element(By.ID, 'add-to-cart-sauce-labs-onesie').click()
-    # зайти в корзину
-    chrome_browser.find_element(
-        By.CSS_SELECTOR, '[data-test="shopping-cart-link"]').click()
-    # нажать кнопку Checkout
-    chrome_browser.find_element(By.ID, 'checkout').click()
-    # заполнить форму
-    fields = {
-        "firstName": "Иван",
-        "lastName": "Петров",
-        "postalCode": "423457"}
+def test_total_label(chrome_browser: WebDriver):
+    shop_total_label = ShopContainer(chrome_browser)
+    shop_total_label.authorization()
+    shop_total_label.add_product_to_cart()
+    shop_total_label.go_to_cart()
+    shop_total_label.press_button_Checkout()
+    shop_total_label.fill_out_form()
+    shop_total_label.press_button_Continue()
+    sleep(5)
+# проверить что стоимость совпадает
 
-    for field_name, value in fields.items():
-        field = chrome_browser.find_element(
-            By.CSS_SELECTOR, f"[name='{field_name}']")
-        field.send_keys(value)
-
-    # нажать кнопку Continue
-    chrome_browser.find_element(By.ID, 'continue').click()
-    # Прочитать со страницы итоговую стоимость
-    total_label = chrome_browser.find_element(
-        By.CSS_SELECTOR, '[data-test="total-label"]').text
-    chrome_browser.quit()
-
-    assert total_label == 'Total: $58.29'
+    assert shop_total_label.final_cost() == 'Total: $58.29'

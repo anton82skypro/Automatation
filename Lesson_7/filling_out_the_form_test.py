@@ -1,59 +1,33 @@
-import pytest
-from selenium.webdriver.common.by import By
-from Pages.homework import URL1, fields
+from Pages.homework import MainPage
+from Pages.DataFields import DataField
 
 
-def filling_out_the_form(chrome_browser):
-    chrome_browser.implicitly_wait(10)
-    # зайти на сайт
-    chrome_browser.get(URL1)
-    # заполнить форму
-    for field_name, value in fields.items():
-        field = chrome_browser.find_element(
-            By.CSS_SELECTOR, f"[name='{field_name}']")
-        field.send_keys(value)
-    # нажимаем кнопку Submit
-    chrome_browser.find_element(
-        By.CSS_SELECTOR, "button[type='submit']").click()
+def test_assertion(chrome_browser):
+    main_page = MainPage(chrome_browser)
+    main_page.find_fields()
+    main_page.filling_in_the_fields()
+    main_page.click_submit_button()
 
+    data_fild = DataField(chrome_browser)
+    data_fild.find_fields()
+    data_fild.get_class_first_name()
+    data_fild.get_class_last_name()
+    data_fild.get_class_address()
+    data_fild.get_class_e_mail()
+    data_fild.get_class_phone()
+    data_fild.get_class_city()
+    data_fild.get_class_country()
+    data_fild.get_class_job_position()
+    data_fild.get_class_company
+    data_fild.get_class_zip_code()
 
-@pytest.mark.test_color
-# Проверяем статус поля Zip code
-def test_danger_color(chrome_browser):
-    filling_out_the_form(chrome_browser)
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#zip-code").value_of_css_property("color") == "rgba(132, 32, 41, 1)"
-
-# проверяем статусы полей
-
-
-def test_success_color(chrome_browser):
-    filling_out_the_form(chrome_browser)
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#first-name").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#last-name").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#address").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#e-mail").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#phone").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#city").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#country").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#job-position").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
-    assert chrome_browser.find_element(
-        By.CSS_SELECTOR,
-        "#company").value_of_css_property("color") == "rgba(15, 81, 50, 1)"
+    assert "success" in data_fild.get_class_first_name()
+    assert "success" in data_fild.get_class_last_name()
+    assert "success" in data_fild.get_class_address()
+    assert "success" in data_fild.get_class_e_mail()
+    assert "success" in data_fild.get_class_phone()
+    assert "success" in data_fild.get_class_city()
+    assert "success" in data_fild.get_class_country()
+    assert "success" in data_fild.get_class_job_position()
+    assert "success" in data_fild.get_class_company()
+    assert "danger" in data_fild.get_class_zip_code()
